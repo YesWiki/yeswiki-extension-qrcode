@@ -26,6 +26,9 @@ listefiche***1***participant 1*** ***  *** ***part1*** ***1***
 listefiche***1***participant 2*** ***  *** ***part2*** ***1***
 champs_cache***relation***contact***
 ```
+
+2.1. Si vous utilisez d'autres identifiants que 1 et 2, il faut aller modifier le handler/qrcodetroc avec les bons ID de formulaire
+
 3. créer un template pour afficher les badges qrcodes
 ```
 <?php
