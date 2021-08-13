@@ -22,6 +22,7 @@ if ($speak == '0' or $speak == 'false' or $speak == 'no') {
 }
 if ($speak) {
     $this->AddJavascript('
+  document.addEventListener("DOMContentLoaded", function(event) { 
     function mutate(mutations) {
       mutations.forEach(function(mutation) {
         console.log(mutation.type);
@@ -36,7 +37,7 @@ if ($speak) {
 
     // first load
     speak("#qrinfos .alert");
-    ');
+  });');
 }
 $output = '<div id="qrinfos" class="hide">
 <div class="alert alert-info">'._t('QR_FIRST_INSTRUCTIONS').'</div>

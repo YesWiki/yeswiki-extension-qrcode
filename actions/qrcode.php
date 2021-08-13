@@ -25,7 +25,6 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-error_reporting(E_ALL);
 
 // Lecture des parametres de l'action
 $text = $this->GetParameter('text');
@@ -35,14 +34,12 @@ if(empty($correction)){
 }
 // si pas de texte, on affiche une erreur
 if (empty($text)) {
-	echo ("<div class=\"error_box\">ERREUR action qrcode : pas de texte saisi (parametre text=\"\" manquant).</div>");
+	echo ("<div class=\"alert alert-danger\">ERREUR action qrcode : pas de texte saisi (parametre text=\"\" manquant).</div>");
 }
 else { 
 	include_once 'tools/qrcode/libs/qrlib.php';
 	
 	$cache_image = 'cache'.DIRECTORY_SEPARATOR.'qrcode-'.$this->getPageTag().'-'.md5($text).'.png';
 	QRcode::png($text, $cache_image, $correction, 4, 2);
-	echo '<img src="'.$cache_image.'" alt="'.$text.'" />'."\n";
+	echo '<img src="'.$cache_image.'" alt="'.htmlspecialchars($text).'" class="qrcode-img" />'."\n";
 }
-
-?>
