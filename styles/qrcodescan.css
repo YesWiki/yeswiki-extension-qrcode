@@ -14,9 +14,10 @@
   margin:0 auto 30px auto;
   border-radius: 20px;
   border:4px #388cf3 solid;
-  background: #FFF;
-  /*width:320px;
-  height:260px;*/
+  background: #111;
+  width:450px;
+  height:450px;
+  display: flex;
 }
 
 #qrreader video {

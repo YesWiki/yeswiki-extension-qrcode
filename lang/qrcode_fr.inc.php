@@ -1,4 +1,5 @@
 <?php
+
 /*vim: set expandtab tabstop=4 shiftwidth=4: */
 // +------------------------------------------------------------------------------------------------------+
 // | PHP version 5                                                                                        |
@@ -42,5 +43,7 @@ $GLOBALS['translations'] = array_merge(
         'QR_FINISH' => 'C\'est fini !',
         'QR_FINAL_INSTRUCTIONS' => 'Votre mise en lien est effective! Un email de contact a été envoyé à chacun des participants.',
         'QR_RESET' => 'Recommencer',
+        'QRCODE_RELATION_FORM_NAME' => 'Relations QRcodeTROC',
+        'QRCODE_RELATION_FORM_DESCRIPTION' => 'Établi un lien entre une fiche bazar et une autre afin d\'être restitué visuellement',
     )
 );

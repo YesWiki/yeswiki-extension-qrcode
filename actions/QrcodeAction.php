@@ -1,0 +1,44 @@
+<?php
+/**
+ * Qrcode action for yeswiki, for displaying a qrcode image with given text
+ *
+ * @category Wiki
+ * @package  YesWikiQrcode
+ * @author   2011  Francois Labastie <flabastie@hotmail.com>
+ * @author   2018-2021 Florian Schmitt <mrflos@lilo.org>
+ * @license  GNU AFFERO GENERAL PUBLIC LICENSE version 3
+ * @link     https://yeswiki.net
+ */
+use YesWiki\Core\YesWikiAction;
+
+class QrcodeAction extends YesWikiAction
+{
+    public function run()
+    {
+        // Lecture des parametres de l'action
+        $this->arguments['text'] = !empty($this->arguments['text']) ?
+            $this->arguments['text'] :
+            null;
+
+        $this->arguments['correction'] = !empty($this->arguments['correction']) ?
+            $this->arguments['correction'] :
+            $this->wiki->config['qrcode_config']['QR_CORRECTION'];
+
+        // si pas de texte, on affiche une erreur
+        if (empty($this->arguments['text'])) {
+            return "<div class=\"alert alert-danger\">ERREUR action qrcode : pas de texte saisi (parametre text=\"\" manquant).</div>";
+        } else {
+            include_once 'tools/qrcode/libs/qrlib.php';
+
+            $cache_image = 'cache'.DIRECTORY_SEPARATOR.'qrcode-'.$this->wiki->getPageTag().'-'.md5($this->arguments['text']).'.png';
+            QRcode::png(
+                $this->arguments['text'],
+                $cache_image,
+                $this->arguments['correction'],
+                4,
+                2
+            );
+            return '<img src="'.$cache_image.'" alt="'.htmlspecialchars($this->arguments['text']).'" class="qrcode-img" />'."\n";
+        }
+    }
+}

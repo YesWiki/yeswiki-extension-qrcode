@@ -1,20 +1,16 @@
 <?php
-/*
-*/
 
-// Vérification de sécurité
-if (!defined("WIKINI_VERSION"))
-{
-	die ("acc&egrave;s direct interdit");
+// Verification de securite
+if (!defined("WIKINI_VERSION")) {
+    die("acc&egrave;s direct interdit");
 }
 
-// création et affichage QRcode du lien de page
+// creation et affichage QRcode du lien de page
 include_once 'tools/qrcode/libs/qrlib.php';
-$url = $this->Href();	
+$url = $this->Href();
 $cache_image = 'cache/qrcode-'.$this->getPageTag().'.png';
-QRcode::png($url, $cache_image, QR_CORRECTION, 4, 2);
+QRcode::png($url, $cache_image, $this->config['qrcode_config']['QR_CORRECTION'], 4, 2);
 $html = '<img class="right" src="'.$cache_image.'" title="QRcode de l\'adresse de cette page " alt="'.$url.'" />'."\n";
 
-// Agrégation du QRcode dans le buffer du handler share
-$plugin_output_new = preg_replace ('/<div class="page">/', '<div class="page">'."\n".utf8_encode($html)."\n", $plugin_output_new);
-?>
+// Agrï¿½gation du QRcode dans le buffer du handler share
+$plugin_output_new = preg_replace('/<div class="page">/', '<div class="page">'."\n".utf8_encode($html)."\n", $plugin_output_new);
