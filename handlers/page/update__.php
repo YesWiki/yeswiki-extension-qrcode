@@ -27,9 +27,9 @@ if (!defined("WIKINI_VERSION")) {
     'RELATION_FORM_DESCRIPTION',
     _t('QRCODE_RELATION_FORM_DESCRIPTION')
 );
-!defined('RELATION_FORM_TEMPLATE') && define('RELATION_FORM_TEMPLATE', 'titre***Relation de type {{bf_relation}} entre {{bf_fiche1}} et {{bf_fiche2}}*** ***
+!defined('RELATION_FORM_TEMPLATE') && define('RELATION_FORM_TEMPLATE', 'titre***Relation "{{bf_relation}}" entre {{bf_fiche1}} et {{bf_fiche2}}*** ***
 texte***bf_fiche1***Fiche 1***255***255*** *** ***text***1*** *** *** *** *** *** ***
-texte***bf_fiche2***participant 2***255***255*** *** ***text***1*** *** *** *** *** *** ***
+texte***bf_fiche2***Fiche 2***255***255*** *** ***text***1*** *** *** *** *** *** ***
 texte***bf_relation***Relation***255***255***contact*** ***text***1*** *** *** *** *** *** ***
 acls*** * ***@admins***@admins*** *** *** *** *** *** ***');
 
