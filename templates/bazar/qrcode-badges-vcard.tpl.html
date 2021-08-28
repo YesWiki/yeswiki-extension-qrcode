@@ -33,19 +33,21 @@ if (count($fiches)>0) : ?>
             }
             $qrcode .= 'END:VCARD'."\n";
 
-            include_once 'tools/qrcode/libs/qrlib.php';
-            $cache_image = 'cache'.DIRECTORY_SEPARATOR.'qrcode-'.$GLOBALS['wiki']->getPageTag().'-'.md5($qrcode).'.png';
-            if (!file_exists($cache_image)) {
-                QRcode::png($qrcode, $cache_image, QR_CORRECTION, 4, 2);
+            $cacheImage = 'cache'.DIRECTORY_SEPARATOR.'qrcode-'.$GLOBALS['wiki']->getPageTag().'-'.md5($qrcode).'.svg';
+            if (!file_exists($cacheImage) || (!empty($_GET['refresh']) && $_GET['refresh']=='1')) {
+                $GLOBALS['qrcode']->encoding('UTF-8')->errorCorrection('H')->generate(
+                    $qrcode,
+                    $cacheImage
+                );
             }
             ?>
           <div class="badge-info">
-            <h4><?php echo $fiche['bf_titre']; ?></h4>
+            <h4 class="badge-title"><?php echo $fiche['bf_titre']; ?></h4>
 
-            <?php if (!empty($fiche['bf_structure'])) : ?><strong><?php echo $fiche['bf_structure']; ?></strong><br><br><?php endif; ?>
-            <?php echo $fiche['bf_fonction']; ?>
+            <?php if (!empty($fiche['bf_structure'])) : ?><div class="badge-organisation"><?php echo $fiche['bf_structure']; ?></div><?php endif; ?>
+            <?php if (!empty($fiche['bf_fonction'])) : ?><div class="badge-occupation"><?php echo $fiche['bf_fonction']; ?></div><?php endif; ?>
           </div>
-          <img class="img-qrcode" src="<?php echo $cache_image; ?>" alt="qrcode">
+          <img class="img-qrcode" src="<?php echo $cacheImage; ?>" alt="qrcode" />
         </div>
         <?php if (($i % 4 == 0)) { echo '<div class="break"></div>'; } ?>
     <?php endforeach; ?>
@@ -63,18 +65,15 @@ if (count($fiches)>0) : ?>
     position: relative;
     font-size: 10pt;
   }
-  .badge-info {text-align: center;}
-  .img-qrcode {position: absolute; width:60mm; height:60mm; bottom: 0mm; left: 12mm;}
-  .qrbadge h4 { font-size: 16pt; color:#61b32e !important; margin: 3mm 0mm; }
+  .badge-info {text-align: left;}
+  .badge-title { font-size: 16pt; color:#61b32e !important; margin: 3mm 0mm; }
+  .badge-organisation {margin-bottom:2em; font-weight: bold;}
+  .img-qrcode {position: absolute; width:60mm; height:60mm; bottom: 5mm; left: 12mm;}
 
   @media print {
      #yw-header, #yw-footer, #yw-topnav, .footer, #search-form, .export-links { display:none; }
      .page, #yw-container, .badge-container {padding:0;width:100%;margin:0;}
-     .qrbadge { border:none;}
-     /*.qrbadge { width:85mm; height:108mm; margin:30mm 9mm 9mm 9mm; padding: 2mm; font-size: 10pt; border:none; }
-     .qrbadge h4 { font-size: 16pt; color:#61b32e; margin: 3mm 5mm; }
-     .img-qrcode {position: absolute; width:60mm; height:60mm; bottom: 0mm; left: 12mm;}*/
-
+     <?php if (isset($_GET['border']) && $_GET['border'] == "0") : ?>.qrbadge { border:none;}<?php endif; ?>
      .break {
         page-break-after: always;
         page-break-inside: avoid;

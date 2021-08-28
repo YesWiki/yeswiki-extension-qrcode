@@ -65,9 +65,7 @@ function showNotif(txt, alertclass) {
 function reset() {
   step = 1
   $("#qr-container .step1").removeClass("stepper__row--disabled").addClass("stepper__row--active")
-
   $("#qr-container .step2").removeClass("stepper__row--active").addClass("stepper__row--disabled")
-
   $("#qr-container .step3").removeClass("stepper__row--active").addClass("stepper__row--disabled")
 
   $("#qr-container .paragraph").show()
@@ -84,7 +82,7 @@ function successHandler(data) {
   // do something when code is read and is a string
   if ((typeof data === "string" || data instanceof String) && data != "undefined") {
     var vcard = parseVcard(data)
-    // console.log(vcard);
+    //console.log(vcard);
     if (vcard.fn && vcard.email && vcard.url) {
       if (step == 1) {
         firstpeople = vcard
@@ -133,8 +131,8 @@ function successHandler(data) {
             "alert-success"
           )
 
-          // reset after 2 seconds
-          setTimeout(reset, 2000)
+          // reset after 5 seconds
+          setTimeout(reset, 5000)
 
           // order people by name to have an unique pair in db
           if (firstpeople.fn.toLowerCase() > secondpeople.fn.toLowerCase()) {
@@ -143,21 +141,17 @@ function successHandler(data) {
             firstpeople = temp
           }
           // TODO test if relation already exists
-          var url1 = firstpeople.url.split("wiki=")
-          var url2 = secondpeople.url.split("wiki=")
+          var url1 = firstpeople.url.split("?")
+          var url2 = secondpeople.url.split("?")
           // make link in database
           var params = new Object()
-          params["bf_titre"] =
-            "Contact entre {{listefiche" +
-            scanner.data("idusers") +
-            "part1}} et {{listefiche" +
-            scanner.data("idusers") +
-            "part2}}"
+          params["bf_titre"] = 'Relation "{{bf_relation}}" entre {{bf_fiche1}} et {{bf_fiche2}}'
           params["antispam"] = "1"
-          params["relation"] = "contact"
-          params["listefiche" + scanner.data("idusers") + "part1"] = url1[1]
-          params["listefiche" + scanner.data("idusers") + "part2"] = url2[1]
-          $.post("?BazaR/json&demand=save_entry&form=" + scanner.data("idlinks"), params)
+          params["bf_relation"] = "contact"
+          params["bf_fiche1"] = url1[1]
+          params["bf_fiche2"] = url2[1]
+          params["id_typeannonce"] = "1300"
+          $.post("?BazaR/json&demand=save_entry&form=1300", params)
 
           // first mail send
           var message = "Les informations de votre contact:<br>"
@@ -176,7 +170,7 @@ function successHandler(data) {
             subject: "QRcode contact",
             message: message,
             mail: secondpeople.email[0]["value"][0],
-            entete: "Co-construire",
+            entete: "Co-construire 2021", //Todo make a param
             type: "contact",
           })
 
@@ -196,7 +190,7 @@ function successHandler(data) {
             subject: "QRcode contact",
             message: message,
             mail: firstpeople.email[0]["value"][0],
-            entete: "Co-construire",
+            entete: "Co-construire 2021",
             type: "contact",
           })
         }
@@ -221,49 +215,47 @@ var step = 1,
   firstpeople,
   secondpeople
 
-// scanner initialisation
-
-//var scanner = $("#qrreader")
-var resultContainer = document.getElementById('qrreader-results');
-var lastResult, countResults = 0;
-function onScanSuccess(decodedText, decodedResult) {
-    if (decodedText !== lastResult) {
-        ++countResults;
-        lastResult = decodedText;
-        // Handle on success condition with the decoded message.
-        console.log(`Scan result ${decodedText}`, decodedResult);
-    }
-}
+var resultContainer = document.getElementById("qrreader-results")
+var lastResult,
+  countResults = 0
 
 // This method will trigger user permissions
-const html5QrCode = new Html5Qrcode(/* element id */ "qrreader");
-Html5Qrcode.getCameras().then(devices => {
-  if (devices && devices.length) {
-    var cameraId = devices[0].id;
-    html5QrCode.start(
-      cameraId, 
-      {
-        fps: 10,    // Optional, frame per seconds for qr code scanning
-        qrbox: 300  // Optional, if you want bounded box UI
-      },
-      (decodedText, decodedResult) => {
-        // do something when code is read
-        console.info(decodedText, decodedResult)
-      },
-      (errorMessage) => {
-        // parse error, ignore it.
-        console.error(errorMessage)
-      })
-    .catch((err) => {
-      // Start failed, handle it.
-      console.error(err)
-    });
+const html5QrCode = new Html5Qrcode(/* element id */ "qrreader", { formatsToSupport: [ Html5QrcodeSupportedFormats.QR_CODE ] })
+const config = { fps: 10, qrbox: 300 }
+const qrCodeSuccessCallback = (decodedText, decodedResult) => {
+  //console.info(decodedText, decodedResult)
+  if (decodedText !== lastResult) {
+    lastResult = decodedText;
+    successHandler(decodedText)
   }
-}).catch(err => {
-  console.error(err)
-});
+}
+// we prefer back camera for scanning from mobile phone
+html5QrCode
+  .start({ facingMode: "environment" }, config, qrCodeSuccessCallback, (errorMessage) => {
+    // parse error, ignore it.
+    // console.error(errorMessage)
+  })
+  .catch((err) => {
+    // Start failed, handle it.
+    console.error(err)
+  })
 
-// var html5QrcodeScanner = new Html5QrcodeScanner(
-//     "qrreader", { fps: 10, qrbox: 250 });
-// html5QrcodeScanner.render(onScanSuccess);
-//scanner.html5_qrcode(successHandler, errorHandler, videoErrorHandler)
+document.addEventListener("DOMContentLoaded", function (event) {
+  var qrinfos = document.getElementById("qrinfos")
+  if (qrinfos.dataset.speak === "true") {
+    function mutate(mutations) {
+      mutations.forEach(function (mutation) {
+        // console.log(mutation.type)
+        speak("#qrinfos .alert")
+      })
+    }
+
+    var target = document.querySelector("div#qrinfos .alert")
+    var observer = new MutationObserver(mutate)
+    var config = { characterData: false, attributes: false, childList: true, subtree: false }
+    observer.observe(target, config)
+
+    // first load
+    speak("#qrinfos .alert")
+  }
+})

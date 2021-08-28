@@ -3,27 +3,3 @@ parameters:
 
     # official reserved bazar form id for relations
     relation_form_id: 1300
-
-    # something about quality
-    QR_CORRECTION: 'L'
-
-    # use cache - more disk reads but less CPU power, masks and format templates are stored there
-    QR_CACHEABLE: true
-
-    # used when QR_CACHEABLE is true
-    QR_CACHE_DIR: 'cache/'
-
-    # default error logs dir
-    QR_LOG_DIR: 'cache/'
-
-    # if true, estimates best mask (spec. default, but extremally slow; set to false to significant performance boost but (propably) worst quality code
-    QR_FIND_BEST_MASK: true
-
-    # when QR_FIND_BEST_MASK is false
-    QR_DEFAULT_MASK: 2
-
-    # if false, checks all masks available, otherwise value tells count of masks need to be checked, mask id are got randomly
-    QR_FIND_FROM_RANDOM: false
-
-    # maximum allowed png image width (in pixels), tune to make sure GD and PHP can handle such big images
-    QR_PNG_MAXIMUM_SIZE: 1024

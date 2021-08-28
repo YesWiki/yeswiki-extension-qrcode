@@ -20,25 +20,16 @@ class QrcodeAction extends YesWikiAction
             $this->arguments['text'] :
             null;
 
-        $this->arguments['correction'] = !empty($this->arguments['correction']) ?
-            $this->arguments['correction'] :
-            $this->wiki->config['qrcode_config']['QR_CORRECTION'];
-
         // si pas de texte, on affiche une erreur
         if (empty($this->arguments['text'])) {
-            return "<div class=\"alert alert-danger\">ERREUR action qrcode : pas de texte saisi (parametre text=\"\" manquant).</div>";
+            return '<div class="alert alert-danger">'._t('QR_CODE_ERROR_MISSING_PARAM').'</div>'."\n";
         } else {
-            include_once 'tools/qrcode/libs/qrlib.php';
-
-            $cache_image = 'cache'.DIRECTORY_SEPARATOR.'qrcode-'.$this->wiki->getPageTag().'-'.md5($this->arguments['text']).'.png';
-            QRcode::png(
+            $cacheImage = 'cache'.DIRECTORY_SEPARATOR.'qrcode-'.$this->wiki->getPageTag().'-'.md5($this->arguments['text']).'.svg';
+            $GLOBALS['qrcode']->encoding('UTF-8')->errorCorrection('H')->generate(
                 $this->arguments['text'],
-                $cache_image,
-                $this->arguments['correction'],
-                4,
-                2
+                $cacheImage
             );
-            return '<img src="'.$cache_image.'" alt="'.htmlspecialchars($this->arguments['text']).'" class="qrcode-img" />'."\n";
+            return '<img src="'.$cacheImage.'" alt="'.htmlspecialchars($this->arguments['text']).'" class="qrcode-img" />'."\n";
         }
     }
 }
