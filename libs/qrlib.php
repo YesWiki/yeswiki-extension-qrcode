@@ -27,12 +27,10 @@
 
     $QR_BASEDIR = dirname(__FILE__).DIRECTORY_SEPARATOR;
 
-    define('QR_LOG_DIR', $GLOBALS['wiki']->config['qrcode_config']['QR_LOG_DIR']);
-    define('QR_PNG_MAXIMUM_SIZE', $GLOBALS['wiki']->config['qrcode_config']['QR_PNG_MAXIMUM_SIZE']);
-
     // Required libs
 
     include $QR_BASEDIR."qrconst.php";
+    include $QR_BASEDIR."qrconfigCustom.php";
     include $QR_BASEDIR."qrtools.php";
     include $QR_BASEDIR."qrspec.php";
     include $QR_BASEDIR."qrimage.php";

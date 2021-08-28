@@ -34,9 +34,9 @@ if (count($fiches)>0) : ?>
             $qrcode .= 'END:VCARD'."\n";
 
             include_once 'tools/qrcode/libs/qrlib.php';
-            $cache_image = 'cache'.DIRECTORY_SEPARATOR.'qrcode-'.$GLOBALS['wiki']->getPageTag().'-'.md5($qrcode).'.png';
+            $cache_image = 'cache'.DIRECTORY_SEPARATOR.'qrcode-'.$GLOBALS['wiki']->getPageTag().'-'.md5($qrcode.$this->wiki->config['qrcode_config']['QR_CORRECTION']).'.png';
             if (!file_exists($cache_image)) {
-                QRcode::png($qrcode, $cache_image, QR_CORRECTION, 4, 2);
+                QRcode::png($qrcode, $cache_image, $this->wiki->config['qrcode_config']['QR_CORRECTION'], 4, 2);
             }
             ?>
           <div class="badge-info">
