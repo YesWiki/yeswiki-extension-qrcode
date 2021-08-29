@@ -45,5 +45,8 @@ $GLOBALS['translations'] = array_merge(
         'QR_RESET' => 'Recommencer',
         'QRCODE_RELATION_FORM_NAME' => 'Relations QRcodeTROC',
         'QRCODE_RELATION_FORM_DESCRIPTION' => 'Établi un lien entre une fiche bazar et une autre afin d\'être restitué visuellement',
+        'QRCODE_EXTENSION' => 'Extension Qrcode',
+        'QRCODE_DOC_GET_RELATIONS' => 'Retourne la liste de toutes les relations (dont on peut préciser le type ou laisser vide)',
+        'QRCODE_DOC_POST_RELATIONS' => 'Ajoute une fiche de type relation dans la base de données',
     )
 );

@@ -220,7 +220,7 @@ var lastResult,
 
 // This method will trigger user permissions
 const html5QrCode = new Html5Qrcode(/* element id */ "qrreader", { formatsToSupport: [ Html5QrcodeSupportedFormats.QR_CODE ] })
-const config = { fps: 10, qrbox: 300 }
+const config = { fps: 10, qrbox: 250 }
 const qrCodeSuccessCallback = (decodedText, decodedResult) => {
   //console.info(decodedText, decodedResult)
   if (decodedText !== lastResult) {

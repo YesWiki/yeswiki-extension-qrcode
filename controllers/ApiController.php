@@ -17,6 +17,7 @@ class ApiController extends YesWikiController
      */
     public function getAllRelations(string $type = 'contact')
     {
+        $entryCache = [];
         $options = [
             'formsIds' => $this->wiki->config['qrcode_config']['relation_form_id'],
         ];
@@ -26,7 +27,16 @@ class ApiController extends YesWikiController
             $options['queries'] = $query;
         }
         $entries = $this->getService(EntryManager::class)->search($options, true, true);
-
+        foreach ($entries as $k => $e) {
+            $entryCache[$e['bf_fiche1']] = isset($entryCache[$e['bf_fiche1']]) ?
+                $entryCache[$e['bf_fiche1']] :
+                $this->getService(EntryManager::class)->getOne($e['bf_fiche2']);
+            $entryCache[$e['bf_fiche2']] = isset($entryCache[$e['bf_fiche2']]) ?
+                $entryCache[$e['bf_fiche2']] :
+                $this->getService(EntryManager::class)->getOne($e['bf_fiche2']);
+            $entries[$k]['entry1'] = $entryCache[$e['bf_fiche1']];
+            $entries[$k]['entry2'] = $entryCache[$e['bf_fiche2']];
+        }
         return new ApiResponse(empty($entries) ? null : $entries);
     }
 
@@ -42,7 +52,6 @@ class ApiController extends YesWikiController
             false,
             $_SERVER['HTTP_SOURCE_URL'] ?? null
         );
-
         if (!$entry) {
             throw new BadRequestHttpException();
         }
@@ -60,18 +69,18 @@ class ApiController extends YesWikiController
      */
     public function getDocumentation()
     {
-        $output = '<h2>Extension Qrcode</h2>' . "\n";
+        $output = '<h2>'._t('QRCODE_EXTENSION').'</h2>' . "\n";
 
         $output .= '
         <p>
         <b><code>GET ' . $this->wiki->href('', 'api/relations/{type}') . '</code></b><br />
-        Retourne la liste de toutes les relations (dont on peut préciser le type ou laisser vide).
+        '._t('QRCODE_DOC_GET_RELATIONS').'.
         </p>';
 
         $output .= '
         <p>
         <b><code>POST ' . $this->wiki->href('', 'api/relations') . '</code></b><br />
-        Ajoute une fiche de type relation dans la base de données.
+        '._t('QRCODE_DOC_POST_RELATIONS').'.
         </p>';
 
         return $output;

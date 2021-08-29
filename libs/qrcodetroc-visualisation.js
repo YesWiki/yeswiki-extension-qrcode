@@ -1,11 +1,9 @@
-document.addEventListener("DOMContentLoaded", function (event) {
-  // titre des fiches
-  var entries = new Array()
-
-  // récupération des liens
+document.addEventListener("DOMContentLoaded", function () {
+  // nombre total d'utisateur (pour compter les contacts)
+  var nbUsers = new Array()
+  // relations avec les données des fiches associées
   var relations = new Array()
-
-  // stockage des nombres de liens
+  // nombre total de liens
   var nbRelations = new Array()
 
   var canvas = document.getElementById("canvas-qrcodetroc")
@@ -25,9 +23,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
   }
 
   function getRelations() {
-    $.getJSON("?api/relations&query=bf_relation=" + canvas.dataset.relation, function (dataRelations) {
-      nbRelations = relations.length
-      console.log(dataRelations, nbRelations)
+    $.getJSON("?api/relations/" + canvas.dataset.relation, function (dataRelations) {
+      relations = dataRelations
+      nbRelations = Object.keys(relations).length
+      console.log(relations, "Nb relations : "+nbRelations)
+    })
+    $.getJSON("?api/entries/" + canvas.dataset.formuser, function (users) {
+      nbUsers = Object.keys(users).length
+      console.log("Nb users : "+nbUsers)
     })
   }
 
