@@ -3,3 +3,15 @@ parameters:
 
     # official reserved bazar form id for relations
     relation_form_id: 1300
+
+services:
+  _defaults:
+    autowire: true
+    public: true
+
+  #YesWiki\Qrcode\Service\:
+  #  resource: 'services/*'
+
+  # Allows to use controllers as services
+  YesWiki\Qrcode\Controller\:
+    resource: 'controllers/*'

@@ -146,12 +146,11 @@ function successHandler(data) {
           // make link in database
           var params = new Object()
           params["bf_titre"] = 'Relation "{{bf_relation}}" entre {{bf_fiche1}} et {{bf_fiche2}}'
-          params["antispam"] = "1"
           params["bf_relation"] = "contact"
           params["bf_fiche1"] = url1[1]
           params["bf_fiche2"] = url2[1]
           params["id_typeannonce"] = "1300"
-          $.post("?BazaR/json&demand=save_entry&form=1300", params)
+          $.post("?api/relations", params)
 
           // first mail send
           var message = "Les informations de votre contact:<br>"
