@@ -79,6 +79,7 @@ $(".btn-reset").click(reset)
 
 // handler of the qrcode data when successfully read
 function successHandler(data) {
+  var qrinfos = document.getElementById("qrinfos")
   // do something when code is read and is a string
   if ((typeof data === "string" || data instanceof String) && data != "undefined") {
     var vcard = parseVcard(data)
@@ -146,7 +147,7 @@ function successHandler(data) {
           // make link in database
           var params = new Object()
           params["bf_titre"] = 'Relation "{{bf_relation}}" entre {{bf_fiche1}} et {{bf_fiche2}}'
-          params["bf_relation"] = "contact"
+          params["bf_relation"] = qrinfos.dataset.relation
           params["bf_fiche1"] = url1[1]
           params["bf_fiche2"] = url2[1]
           params["id_typeannonce"] = "1300"

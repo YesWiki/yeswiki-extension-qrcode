@@ -1,17 +1,26 @@
 <?php
 
-$relation = empty($_GET['relation']) ? 'contact' : $_GET['relation'];
-$formuser = empty($_GET['formuser']) ? '1' : $_GET['formuser'];
-$refresh = empty($_GET['refresh']) ? '30000' : $_GET['refresh'];
-$form = empty($_GET['form']) ? '1300' : $_GET['form'];
+// allow to pass get parameters, fallback on default config
+$relation = empty($_GET['relation']) ?
+    $this->config['qrcode_config']['default_relation_type'] :
+    $_GET['relation'];
+$formuser = empty($_GET['formuser']) ?
+    $this->config['qrcode_config']['default_user_form'] :
+    $_GET['formuser'];
+$refresh = empty($_GET['refresh']) ?
+    $this->config['qrcode_config']['visualisation_refresh_period'] :
+    $_GET['refresh'];
+$form = empty($_GET['form']) ?
+    $this->config['qrcode_config']['relation_form_id'] :
+    $_GET['form'];
 
 $output = '';
 // on recupere les entetes html mais pas ce qu'il y a dans le body
 $header = explode('<body', $this->Header());
 $output .= $header[0] . '<body>'."\n";
-$output .= '<canvas id="canvas-qrcodetroc" data-form="'.$form.'" data-formuser="'.$formuser.'" data-relation="'.$relation.'" data-refresh="'.$refresh.'"></canvas>';
-$this->addJavascriptFile('tools/qrcode/libs/vendor/processing-1.6.6.min.js');
-$this->addJavascriptFile('tools/qrcode/libs/qrcodetroc-visualisation.js');
+$output .= '<main id="canvas-qrcodetroc" data-form="'.$form.'" data-formuser="'.$formuser.'" data-relation="'.$relation.'" data-refresh="'.$refresh.'"></main>';
+$this->addJavascriptFile('tools/qrcode/javascripts/p5.min.js');
+$this->addJavascriptFile('tools/qrcode/javascripts/qrcodetroc-visualisation.js');
 
 // on recupere juste les javascripts et la fin des balises body et html
 $output .= preg_replace('/^.+<script/Us', '<script', $this->Footer());

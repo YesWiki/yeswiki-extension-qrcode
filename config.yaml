@@ -1,8 +1,15 @@
 parameters:
   qrcode_config:
+    relation_form_id: 1300 # official reserved bazar form id for relations
+    default_relation_type: 'contact' # default type of relation
+    default_user_form: '1' # default user form id
+    visualisation_refresh_period: '30000' # in seconds
 
-    # official reserved bazar form id for relations
-    relation_form_id: 1300
+  qrcode_editable_config_params:
+    - 'relation_form_id'
+    - 'default_relation_type'
+    - 'default_user_form'
+    - 'visualisation_refresh_period'
 
 services:
   _defaults:

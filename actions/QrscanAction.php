@@ -16,7 +16,7 @@ class QrscanAction extends YesWikiAction
     {
         $relation = $this->wiki->getParameter('relation');
         if (empty($relation)) {
-            $relation = 'contact';
+            $relation = $this->wiki->config['qrcode_config']['default_relation_type'];
         }
         $speak = $this->wiki->getParameter('speak');
         if ($speak == '0' or $speak == 'false' or $speak == 'no') {
@@ -25,7 +25,8 @@ class QrscanAction extends YesWikiAction
             $speak = 'true';
         }
         return $this->render('@qrcode/qrscan.twig', [
-          'speak' => $speak
+          'speak' => $speak,
+          'relation' => $relation
         ]);
     }
 }

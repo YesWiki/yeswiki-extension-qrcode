@@ -1,7 +1,7 @@
-{{ include_javascript('tools/qrcode/libs/vendor/html5-qrcode.min.js') }}
-{{ include_javascript('tools/qrcode/libs/qrcodescan.js') }}
+{{ include_javascript('tools/qrcode/javascripts/html5-qrcode.min.js') }}
+{{ include_javascript('tools/qrcode/javascripts/qrcodescan.js') }}
 {{ include_css('tools/qrcode/styles/qrcodescan.css') }}
-<div id="qrinfos" data-speak="{{ speak }}" class="hide">
+<div id="qrinfos" data-speak="{{ speak }}"  data-relation="{{ relation }}" class="hide">
     <div class="alert alert-info">{{ _t('QR_FIRST_INSTRUCTIONS') }}</div>
 </div>
 <div id="qr-container">
