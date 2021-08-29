@@ -4,8 +4,8 @@ namespace YesWiki\Qrcode\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use YesWiki\Bazar\Controller\EntryController;
 use YesWiki\Bazar\Service\EntryManager;
 use YesWiki\Core\ApiResponse;
 use YesWiki\Core\YesWikiController;
@@ -13,9 +13,9 @@ use YesWiki\Core\YesWikiController;
 class ApiController extends YesWikiController
 {
     /**
-     * @Route("/api/relations", methods={"GET"}, options={"acl":{"public"}})
+     * @Route("/api/relations/{type}", methods={"GET"}, options={"acl":{"public"}})
      */
-    public function getAllRelations()
+    public function getAllRelations(string $type = 'contact')
     {
         $options = [
             'formsIds' => 1300,
