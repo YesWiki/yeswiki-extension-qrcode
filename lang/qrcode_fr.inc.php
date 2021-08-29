@@ -48,9 +48,9 @@ $GLOBALS['translations'] = array_merge(
         'QRCODE_EXTENSION' => 'Extension Qrcode',
         'QRCODE_DOC_GET_RELATIONS' => 'Retourne la liste de toutes les relations (dont on peut préciser le type ou laisser vide)',
         'QRCODE_DOC_POST_RELATIONS' => 'Ajoute une fiche de type relation dans la base de données',
-        'EDIT_CONFIG_HINT_relation_form_id' => 'Id du formulaire des relations à utiliser par défaut',
-        'EDIT_CONFIG_HINT_default_user_form' => 'Id du formulaire d\'annuaire à utiliser par défaut',
-        'EDIT_CONFIG_HINT_default_relation_type' => 'Qualification par défaut de la relation',
-        'EDIT_CONFIG_HINT_visualisation_refresh_period' => 'Durée en secondes entre chaque requête API de mise à jour',
+        'EDIT_CONFIG_HINT_qrcode_config[relation_form_id]' => 'Id du formulaire des relations à utiliser par défaut',
+        'EDIT_CONFIG_HINT_qrcode_config[default_user_form]' => 'Id du formulaire d\'annuaire à utiliser par défaut',
+        'EDIT_CONFIG_HINT_qrcode_config[default_relation_type]' => 'Qualification par défaut de la relation',
+        'EDIT_CONFIG_HINT_qrcode_config[visualisation_refresh_period]' => 'Durée en secondes entre chaque requête API de mise à jour',
     )
 );

@@ -6,10 +6,10 @@ parameters:
     visualisation_refresh_period: '30000' # in seconds
 
   qrcode_editable_config_params:
-    - 'relation_form_id'
-    - 'default_relation_type'
-    - 'default_user_form'
-    - 'visualisation_refresh_period'
+    - 'qrcode_config[relation_form_id]'
+    - 'qrcode_config[default_relation_type]'
+    - 'qrcode_config[default_user_form]'
+    - 'qrcode_config[visualisation_refresh_period]'
 
 services:
   _defaults:
