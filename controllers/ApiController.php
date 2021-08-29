@@ -33,14 +33,14 @@ class ApiController extends YesWikiController
     /**
      * @Route("/api/relations", methods={"POST"}, options={"acl":{"public"}})
      */
-    public function createRelation($formId)
+    public function createRelation()
     {
         $_POST['antispam'] = 1;
         $entry = $this->getService(EntryManager::class)->create(
             $this->wiki->config['qrcode_config']['relation_form_id'],
             $_POST,
             false,
-            $_SERVER['HTTP_SOURCE_URL']
+            $_SERVER['HTTP_SOURCE_URL'] ?? null
         );
 
         if (!$entry) {
