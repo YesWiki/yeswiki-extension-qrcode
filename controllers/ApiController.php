@@ -18,10 +18,10 @@ class ApiController extends YesWikiController
     public function getAllRelations(string $type = 'contact')
     {
         $options = [
-            'formsIds' => 1300,
+            'formsIds' => $this->wiki->config['qrcode_config']['relation_form_id'],
         ];
         $query = $this->getService(EntryController::class)
-                ->formatQuery(['query' => ['bf_relation' => $type]], $_GET);
+                ->formatQuery(empty($type) ? [] : ['query' => ['bf_relation' => $type]], $_GET);
         if (!empty($query)) {
             $options['queries'] = $query;
         }
@@ -36,7 +36,12 @@ class ApiController extends YesWikiController
     public function createRelation($formId)
     {
         $_POST['antispam'] = 1;
-        $entry = $this->getService(EntryManager::class)->create(1300, $_POST, false, $_SERVER['HTTP_SOURCE_URL']);
+        $entry = $this->getService(EntryManager::class)->create(
+            $this->wiki->config['qrcode_config']['relation_form_id'],
+            $_POST,
+            false,
+            $_SERVER['HTTP_SOURCE_URL']
+        );
 
         if (!$entry) {
             throw new BadRequestHttpException();
@@ -59,8 +64,8 @@ class ApiController extends YesWikiController
 
         $output .= '
         <p>
-        <b><code>GET ' . $this->wiki->href('', 'api/relations') . '</code></b><br />
-        Retourne la liste de toutes les relations.
+        <b><code>GET ' . $this->wiki->href('', 'api/relations/{type}') . '</code></b><br />
+        Retourne la liste de toutes les relations (dont on peut préciser le type ou laisser vide).
         </p>';
 
         $output .= '

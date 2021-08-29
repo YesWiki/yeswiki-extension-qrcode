@@ -153,14 +153,14 @@ function successHandler(data) {
           $.post("?api/relations", params)
 
           // first mail send
-          var message = "Les informations de votre contact:<br>"
-          message = message + firstpeople.fn + "<br>"
-          message = message + "Email : " + firstpeople.email[0]["value"][0] + "<br>"
+          var message = "Les informations de votre contact:\n"
+          message = message + firstpeople.fn + "\n"
+          message = message + "Email : " + firstpeople.email[0]["value"][0] + "\n"
           if (firstpeople.org) {
-            message = message + "Organisation : " + firstpeople.org + "<br>"
+            message = message + "Organisation : " + firstpeople.org + "\n"
           }
           if (firstpeople.url) {
-            message = message + "Fiche complète : " + firstpeople.url + "<br>"
+            message = message + "Fiche complète : " + firstpeople.url + "\n"
           }
 
           $.post("?ContacT/mail", {
@@ -174,14 +174,14 @@ function successHandler(data) {
           })
 
           // second mail send
-          var message = "Les informations de votre contact:<br>"
-          message = message + secondpeople.fn + "<br>"
-          message = message + "Email : " + secondpeople.email[0]["value"][0] + "<br>"
+          var message = "Les informations de votre contact:\n"
+          message = message + secondpeople.fn + "\n"
+          message = message + "Email : " + secondpeople.email[0]["value"][0] + "\n"
           if (secondpeople.org) {
-            message = message + "Organisation : " + secondpeople.org + "<br>"
+            message = message + "Organisation : " + secondpeople.org + "\n"
           }
           if (secondpeople.url) {
-            message = message + "Fiche complète : " + secondpeople.url + "<br>"
+            message = message + "Fiche complète : " + secondpeople.url + "\n"
           }
           $.post("?ContacT/mail", {
             name: secondpeople.fn,
