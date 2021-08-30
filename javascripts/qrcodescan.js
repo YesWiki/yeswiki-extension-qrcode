@@ -64,6 +64,7 @@ function showNotif(txt, alertclass) {
 
 function reset() {
   step = 1
+  lastResult = 0
   $("#qr-container .step1").removeClass("stepper__row--disabled").addClass("stepper__row--active")
   $("#qr-container .step2").removeClass("stepper__row--active").addClass("stepper__row--disabled")
   $("#qr-container .step3").removeClass("stepper__row--active").addClass("stepper__row--disabled")
@@ -127,13 +128,13 @@ function successHandler(data) {
               firstpeople.fn +
               " et " +
               secondpeople.fn +
-              "!! Vous êtes maintenant unis par les liens sacrés du Q.R. code. " +
-              "Un email de contact vous a aussi été envoyé.",
+              "!! Vous êtes unis par les liens sacrés du Q.R. code. " +
+              "Un email de contact vous a été envoyé.",
             "alert-success"
           )
 
-          // reset after 5 seconds
-          setTimeout(reset, 5000)
+          // reset after 10 seconds
+          setTimeout(reset, 10000)
 
           // order people by name to have an unique pair in db
           if (firstpeople.fn.toLowerCase() > secondpeople.fn.toLowerCase()) {
