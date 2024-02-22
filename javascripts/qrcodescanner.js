@@ -1,47 +1,3 @@
-// parse string in vcard format
-function parseVcard(input) {
-  var Re1 = /^(version|fn|title|org|url|adr):(.+)$/i
-  var Re2 = /^([^:;]+);([^:]+):(.+)$/
-  var ReKey = /item\d{1,2}\./
-  var fields = {}
-
-  input.split(/\r\n|\r|\n/).forEach(function (line) {
-    var results, key
-
-    if (Re1.test(line)) {
-      results = line.match(Re1)
-      key = results[1].toLowerCase()
-      fields[key] = results[2]
-    } else if (Re2.test(line)) {
-      results = line.match(Re2)
-      key = results[1].replace(ReKey, "").toLowerCase()
-
-      var meta = {}
-      results[2]
-        .split(";")
-        .map(function (p, i) {
-          var match = p.match(/([a-z]+)=(.*)/i)
-          if (match) {
-            return [match[1], match[2]]
-          } else {
-            return ["TYPE" + (i === 0 ? "" : i), p]
-          }
-        })
-        .forEach(function (p) {
-          meta[p[0]] = p[1]
-        })
-
-      if (!fields[key]) fields[key] = []
-
-      fields[key].push({
-        meta: meta,
-        value: results[3].split(";"),
-      })
-    }
-  })
-  return fields
-}
-
 // do speech synthesis of the text inside the selector
 function speak(selector) {
   // cut former speech
@@ -66,8 +22,8 @@ function reset() {
   step = 1
   lastResult = 0
   $("#qr-container .step1").removeClass("stepper__row--disabled").addClass("stepper__row--active")
-  $("#qr-container .step2").removeClass("stepper__row--active"  ).addClass("stepper__row--disabled")
-  $("#qr-container .step3").removeClass("stepper__row--active"  ).addClass("stepper__row--disabled")
+  $("#qr-container .step2").removeClass("stepper__row--active").addClass("stepper__row--disabled")
+  $("#qr-container .step3").removeClass("stepper__row--active").addClass("stepper__row--disabled")
 
   $("#qr-container .paragraph").show()
   $("#qr-container .text-success").html("")
@@ -91,7 +47,7 @@ function stepHandler(step, entry) {
     showNotif(
       "Vous avez été reconnu comme étant " +
       entry.bf_titre +
-        ". Merci de passer un deuxième Q.R. Code pour faire le lien.",
+      ". Merci de passer un deuxième Q.R. Code pour faire le lien.",
       "alert-success"
     )
   } else if (step == 2) {
@@ -118,11 +74,11 @@ function stepHandler(step, entry) {
 
       showNotif(
         "Bravo " +
-          firstpeople.bf_titre +
-          " et " +
-          secondpeople.bf_titre +
-          "!! Vous êtes unis par les liens sacrés du Q.R. code. " +
-          "Un email de contact vous a été envoyé.",
+        firstpeople.bf_titre +
+        " et " +
+        secondpeople.bf_titre +
+        "!! Vous êtes unis par les liens sacrés du Q.R. code. " +
+        "Un email de contact vous a été envoyé.",
         "alert-success"
       )
 
@@ -192,34 +148,45 @@ function stepHandler(step, entry) {
   return step;
 }
 
+function isValidHttpUrl(string) {
+  let url;
+
+  try {
+    url = new URL(string);
+  } catch (_) {
+    return false;
+  }
+
+  return url.protocol === "http:" || url.protocol === "https:";
+}
+
 // handler of the qrcode data when successfully read
 function successHandler(data) {
-  var qrinfos = document.getElementById("qrinfos")
+  var url = new URL(data)
+  url.search = '';
+  console.log(url.href)
   // do something when code is read and is a string
-  if ((typeof data === "string" || data instanceof String) && data != "undefined") {
-    var vcard = parseVcard(data)
-    if (vcard.fn && vcard.email && vcard.url) {
-      vcard.bf_titre = vcard.fn
-      vcard.bf_mail = vcard.email[0]["value"][0]
-      vcard.bf_structure = vcard.org
-      step = stepHandler(step, vcard)
-    } else {
-      var entry = data.split('personne=');
-      if (entry[1]) {
-        var req = new XMLHttpRequest();
-        req.onreadystatechange = function() {
-          if (req.readyState === 4) {
-            var response = req.responseText;
-            var json = JSON.parse(response);
-            json.url = data.split('/?')[0]+'/?'+json.id_fiche;
-            step = stepHandler(step, json)
-            console.log(json)
-          }
-        };
-        req.open('GET', '?'+entry[1]+'/raw');
-        req.send(null);
-      }
-    }
+  if ((typeof data === "string" || data instanceof String) && data != "undefined" && isValidHttpUrl(data)) {
+    $.ajax({
+      url: data + '/raw',
+    })
+      .done(function(data) {
+        let cardData = JSON.parse(data)
+        console.log(cardData);
+        let song = url.href + 'files/' + cardData.fichierbf_file
+        console.log(song) // TODO test if url exists
+        $('#multimedia-player').html('')
+        $('#multimedia-player').html('<figure><figcaption><strong>En écoute : ' + cardData.bf_titre + '</strong></figcaption><audio id="audio-player" controls autoplay src="' + song + '"></audio><a style="display:block" download href="' + song + '"><i class="fas fa-download"></i> Télécharger</a></figure>')
+        // append the html to the element with the ID 'vid'
+      });
+    //const request = new Request(data + '/raw');
+    //console.log(request)
+    //fetch(request, {
+    //  method: 'GET',
+    //  mode: 'no-cors',
+    //})
+    //  .then(response => response.json())
+    //  .then(data => console.log(data))
   }
 }
 
@@ -244,7 +211,7 @@ var lastResult,
   countResults = 0
 
 // This method will trigger user permissions
-const html5QrCode = new Html5Qrcode(/* element id */ "qrreader", { formatsToSupport: [ Html5QrcodeSupportedFormats.QR_CODE ] })
+const html5QrCode = new Html5Qrcode(/* element id */ "qrreader", { formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE] })
 const config = { fps: 20, qrbox: 250 }
 const qrCodeSuccessCallback = (decodedText, decodedResult) => {
   //console.info(decodedText, decodedResult)
@@ -264,28 +231,10 @@ html5QrCode
     console.error(err)
   })
 
-document.addEventListener("DOMContentLoaded", function (event) {
-  var qrinfos = document.getElementById("qrinfos")
-  var entity = JSON.parse(qrinfos.dataset.entity);
-  if (entity && Object.keys(entity).length > 0) {
-    firstpeople = entity
-        step = 2
-        $(".step1").removeClass("stepper__row--active").addClass("stepper__row--disabled")
-
-        $(".step2").removeClass("stepper__row--disabled").addClass("stepper__row--active")
-
-        $(".step1 .paragraph").hide()
-        $(".step1 .text-success").html("Premier participant : " + entity.bf_titre)
-        showNotif(
-          "Vous avez été reconnu comme étant " +
-          entity.bf_titre +
-            ". Merci de passer un deuxième Q.R. Code pour faire le lien.",
-          "alert-success"
-        )
-  }
+document.addEventListener("DOMContentLoaded", function(event) {
   if (qrinfos.dataset.speak === "true") {
     function mutate(mutations) {
-      mutations.forEach(function (mutation) {
+      mutations.forEach(function(mutation) {
         // console.log(mutation.type)
         speak("#qrinfos .alert")
       })

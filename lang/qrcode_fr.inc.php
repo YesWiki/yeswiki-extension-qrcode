@@ -52,5 +52,6 @@ $GLOBALS['translations'] = array_merge(
         'EDIT_CONFIG_HINT_qrcode_config[default_user_form]' => 'Id du formulaire d\'annuaire à utiliser par défaut',
         'EDIT_CONFIG_HINT_qrcode_config[default_relation_type]' => 'Qualification par défaut de la relation',
         'EDIT_CONFIG_HINT_qrcode_config[visualisation_refresh_period]' => 'Durée en secondes entre chaque requête API de mise à jour',
+        'QRSCAN_NOT_GOOD_FORM_ID' => 'Le qrcode scanné ne correspond pas au type de formulaire attendu',
     )
 );
