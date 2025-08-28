@@ -1,5 +1,5 @@
 {
     "require": {
-        "simplesoftwareio/simple-qrcode": "^4.2"
+        "f9webltd/simple-qrcode": "^4.3"
     }
 }

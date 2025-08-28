@@ -1,0 +1,16 @@
+{{ include_javascript('tools/qrcode/javascripts/html5-qrcode.min.js') }}
+{{ include_javascript('tools/qrcode/javascripts/qrcardscan.js') }}
+{{ include_css('tools/qrcode/styles/qrcardscan.css') }}
+<div id="qrinfos" data-speak="{{ speak }}">
+    <div class="alert alert-info">{{ _t('QR_INTRO')}}</div>
+</div>
+<div class="row">
+    <div class="col-md-8">
+        <div id="qrreader"></div>
+    </div>
+    <div class="col-md-4">
+        <div id="multimedia-player"></div>
+        <div id="multimedia-playlist" class="list-group">
+        </div>
+    </div>
+</div>

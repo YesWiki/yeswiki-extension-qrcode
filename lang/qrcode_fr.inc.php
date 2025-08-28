@@ -32,6 +32,7 @@
 $GLOBALS['translations'] = array_merge(
     $GLOBALS['translations'],
     array(
+        'QR_INTRO' => 'Passer une QRcarte dans la zone visuelle pour lancer une action.',
         'QR_CODE_ERROR_MISSING_PARAM' => 'ERREUR action qrcode : pas de texte saisi (parametre text=\"\" manquant)',
         'QR_MISSING_PARAM_IDLINKS' => 'le paramêtre "idlinks", indiquant la base de donnees des liens, est manquant.',
         'QR_MISSING_PARAM_IDUSERS' => 'le paramêtre "idusers", indiquant la base de donnees des participants, est manquant.',
