@@ -1,4 +1,6 @@
 {
+    "name": "yeswiki/extension-qrcode",
+    "type": "yeswiki-extension",
     "require": {
         "f9webltd/simple-qrcode": "^4.3"
     }
