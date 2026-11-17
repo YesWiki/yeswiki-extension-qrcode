@@ -2,6 +2,12 @@
     "name": "yeswiki/extension-qrcode",
     "type": "yeswiki-extension",
     "require": {
+        "php": "^8.3",
         "f9webltd/simple-qrcode": "^5.0"
+    },
+    "config": {
+        "platform": {
+            "php": "8.3.0"
+        }
     }
 }
